@@ -1,0 +1,29 @@
+# Use root/example as user/password credentials
+version: "3"
+
+services:
+  app:
+    image: node:16.14.0
+    container_name: node-app
+    working_dir: /usr/src/app
+    tty: true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend/:/usr/src/app
+    depends_on:
+      - db
+    command: npx nodemon app.js
+  db:
+    image: mysql:5.7
+    platform: linux/amd64
+    container_name: node-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: node
+      TZ: "Asia/Tokyo"
+    command: mysqld --innodb_use_native_aio=0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
