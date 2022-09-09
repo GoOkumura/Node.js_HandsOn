@@ -27,8 +27,10 @@ const CreateTodo = async (values) => {
   return await res.data;
 };
 
+// タスク一覧を呼び出す
 const GetTodo = async () => {
   try {
+    //  OK
     const res = await axios.get(baseUrl);
     const data = await res.data;
     let temp = "";
@@ -43,6 +45,7 @@ const GetTodo = async () => {
     });
     list.innerHTML = temp;
   } catch (err) {
+    //  NG
     console.error(`[GetTodo Error]`, err);
   }
 };

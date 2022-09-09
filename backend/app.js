@@ -7,6 +7,7 @@ app.use(express.json());
 
 const mysql = require("mysql2");
 
+// DBの設定
 const pool = mysql.createConnection({
   host: "node-mysql",
   user: "root",
@@ -15,15 +16,16 @@ const pool = mysql.createConnection({
   database: "node",
 });
 
+
 //  一覧取得
 app.get("/", (req, res) => {
-    try {
+  try {
       //  OK
-      pool.query("SELECT * FROM `todos`", function (err, results, fields) {
-        console.log(results); // results contains rows returned by server
-  
-        return res.json({
-          todo: results,
+    pool.query("SELECT * FROM `todos`", function (err, results, fields) {
+      console.log(results); // results contains rows returned by server
+
+      return res.json({
+        todo: results,
         });
       });
     } catch (err) {
