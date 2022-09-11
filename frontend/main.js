@@ -1,5 +1,10 @@
-const baseUrl = "http://localhost:3000";
+const baseUrl = "http://localhost:5500";
 const list = document.querySelector(".todos");
+// 新規作成用のフォームを
+
+// フォームのDOMを取得
+const editTodo = document.querySelector(".edit");
+
 
 //  form の DOM
 const addTodo = document.querySelector(".add");
@@ -27,6 +32,12 @@ const CreateTodo = async (values) => {
   return await res.data;
 };
 
+const EditTodo = async (values) => {
+  console.log(values, "values");
+  const res = await axios.put(`${baseUrl}/todo/values`, values);
+  return await res.data;
+};
+
 // タスク一覧を呼び出す
 const GetTodo = async () => {
   try {
@@ -39,6 +50,9 @@ const GetTodo = async () => {
             <li>
                 <h3>${todo.name}</h3>
                 <span>${todo.description}</span>
+
+
+                <input type ='button' value=${todo.id} onClick="DeleteTodo(event)" >削除</input>
             </li>
             `;
       temp += html;
@@ -49,6 +63,20 @@ const GetTodo = async () => {
     console.error(`[GetTodo Error]`, err);
   }
 };
+
+const DeleteTodo = async (event) => {
+  // todoのid
+  const todoID = event.target.value;
+
+  // API(Node.js側)にリクエスト
+
+  try {
+    axios.delete(`${baseUrl}/todo?=${todoID}`);
+
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 const main = () => {
   GetTodo();

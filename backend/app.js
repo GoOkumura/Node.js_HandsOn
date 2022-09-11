@@ -64,9 +64,23 @@ app.put("/todo/:id", (req, res) => {
   return res.json({ status: true });
 });
 
-// 課題③ 削除
-app.delete("/todo/:id", (req, res) => {
-  return res.json({ status: true });
+// 削除処理
+app.delete("/todo", (req, res) => {
+  const todoId = req.query.id;
+  console.log(todoId, "__todoID")
+
+  try {
+    pool.query(
+      "DELETE FROM todos WHERE id = ?",
+      [todoId],
+      (error, results, fields) => {
+        if (error) throw error;
+      }
+    );
+    return res.json({ status: true });
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 //  サーバー起動
